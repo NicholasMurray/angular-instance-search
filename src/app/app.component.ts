@@ -17,10 +17,7 @@ export class AppComponent {
   items: Array<string>;
   terms$ = new Subject<string>();
   constructor(private service: WikipediaSearchService) {
-    this.terms$
-              .debounceTime(400)
-              .distinctUntilChanged()
-              .switchMap(term => this.service.search(term))
-              .subscribe(results => this.items = results);
+    this.service.search(this.terms$)
+                .subscribe(results => this.items = results);
   }
 }

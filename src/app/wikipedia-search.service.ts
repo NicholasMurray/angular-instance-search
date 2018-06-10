@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { URLSearchParams, Jsonp } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class WikipediaSearchService {
 
   constructor(private jsonp: Jsonp) { }
 
-  search (term: string) {
+  search(terms: Observable<string>, debounceMs = 400) {
+    return terms
+      .debounceTime(debounceMs)
+      .distinctUntilChanged()
+      .switchMap(term => this.rawSearch(term));
+  }
+
+  rawSearch (term: string) {
     const search = new URLSearchParams();
     search.set('action', 'opensearch');
     search.set('search', term);
