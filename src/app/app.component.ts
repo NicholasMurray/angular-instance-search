@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 // application wide shared Rx operators
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   moduleId: module.id,
@@ -17,6 +18,7 @@ export class AppComponent {
   constructor(private service: WikipediaSearchService) {
     this.terms$
               .debounceTime(400)
+              .distinctUntilChanged()
               .subscribe(term => this.search(term));
   }
 
